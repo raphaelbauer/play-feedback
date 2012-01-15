@@ -1,4 +1,4 @@
-self: play -> playfeedback 0.1
+self: play -> playfeedback 1.0
 
 require:
     - play
