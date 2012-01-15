@@ -1,0 +1,74 @@
+#{selenium 'Test Feedback'}
+ 
+    /////////////////////////////////////
+    // Verify input / error highlighting
+    ///////////////////////////////////// 
+    clearSession()
+    open('/feedback')
+    assertTextPresent('Feedback')
+    
+    //enter invalid email:
+    type('email', 'i_am_the_customer')
+    clickAndWait('submit')
+ 
+    // verify feedback not sent
+    assertTextPresent('Oops')
+
+    //hmm.. email address is wrong this one is better:
+    type('email', 'i_am_the_customer@company.com')
+    type('feedbacktext', 'my funny feedback')
+    clickAndWait('submit')
+ 
+    // Verify that the feedback is sent
+    assertTextPresent('sent') 
+ 
+ 
+ 
+    /////////////////////////////////////
+    // Verify email sending to owner and 
+    //   user of feedback form
+    ///////////////////////////////////// 
+    clearSession()
+    open('/feedback')
+    assertTextPresent('Feedback')
+    type('email', 'i_am_the_customer@company.com')
+    type('feedbacktext', 'my funny feedback')
+    clickAndWait('submit')
+ 
+    // Verify that the feedback is sent
+    assertTextPresent('sent')
+    
+    //test that 2 emails were sent
+    
+    
+    //Email 1 to owner:
+    storeLastReceivedEmailBy('team@playfeedback.com', 'email')
+
+    //From must be okay:
+    store('javascript{/From:\s+(.*)/.exec(storedVars["email"])[1]}', 'from')
+    assertEval(storedVars["from"], 'team@playfeedback.com')
+       
+    //subject must be okay:
+    store('javascript{/Subject:\s+(.*)/.exec(storedVars["email"])[1]}', 'subject')
+    assertEval(storedVars["subject"], 'Feedback*')
+    
+    //replyTo to must be okay:
+    store('javascript{/ReplyTo:\s+(.*)/.exec(storedVars["email"])[1]}', 'replyTo')
+    assertEval(storedVars["replyTo"], 'i_am_the_customer@company.com')
+    
+    store('javascript{/Email:\s+(.*)/.exec(storedVars["email"])[1]}', 'emailInBody')
+    assertEval(storedVars["emailInBody"], 'i_am_the_customer@company.com')
+    
+    
+    //Email 2 to user that sent feedback:
+    //check email sent to customer: 
+    storeLastReceivedEmailBy('i_am_the_customer@company.com', 'email')
+    
+    //From must be okay:
+    store('javascript{/From:\s+(.*)/.exec(storedVars["email"])[1]}', 'from')
+    assertEval(storedVars["from"], 'team@playfeedback.com')
+      
+    store('javascript{/Subject:\s+(.*)/.exec(storedVars["email"])[1]}', 'subject')
+    assertEval(storedVars["subject"], 'Feedback Received')
+ 
+#{/selenium}

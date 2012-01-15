@@ -1,0 +1,9 @@
+Hi support team!
+This is your fantastic feedback robot :)
+
+Email:
+${emailOfCustomer}
+
+Text:
+${feedbackText}
+

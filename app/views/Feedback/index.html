@@ -1,0 +1,34 @@
+#{extends 'Feedback/layout.html' /}
+
+<h1>Feedback</h1>
+
+#{form @submit()}
+
+    #{if flash.error}
+        <p class="error">
+            &{flash.error}
+        </p>
+    #{/if}
+    #{if flash.success}
+        <p class="success"> &{flash.success}
+        </p>
+    #{/if}
+    <ul>
+        <li>
+            <label for="email">&{'feedback.email'}</label>
+            <input type="text" name="email" id="email" value="${flash.email}" />
+            #{ifError 'email'}<span class="error">#{error 'email' /}</span>#{/ifError}
+        </li>
+        <li>
+            <label for="feedbacktext">&{'feedback.text'}</label>
+            <textarea name="feedbacktext" id="feedbacktext">${flash.feedbacktext}</textarea>
+            #{ifError 'feedbacktext'}<span class="error">#{error 'feedbacktext' /}</span>#{/ifError}
+        </li>
+        <li>
+            #{ugot.recaptcha theme:"clean", tabindex:"2"/}
+        </li>
+        <li>
+            <input type="submit" id="submit" value="&{'feedback.send'}" />
+        </li>
+    </ul>
+#{/form}

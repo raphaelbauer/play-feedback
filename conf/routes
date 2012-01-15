@@ -1,0 +1,8 @@
+# Feedback:
+GET         /feedback                       Feedback.index
+POST        /feedback/submit                Feedback.submit
+GET         /feedback/sent                  Feedback.sent
+
+
+
+GET     /public/                                staticDir:public
